@@ -114,7 +114,7 @@ def needs_reauth(title: str) -> bool:
     return title.startswith("Confirm password")
 
 
-def _wait_for_login(page, url: str, timeout_s: float) -> None:
+def _wait_for_login_inner(page, url: str, timeout_s: float) -> None:
     """If PyPI wants a login or a password confirmation, let the human do it, then return."""
     if "/account/login" in page.url:
         logger.warning(
@@ -135,6 +135,23 @@ def _wait_for_login(page, url: str, timeout_s: float) -> None:
             timeout=timeout_s * 1000,
         )
         page.goto(url)
+
+
+class LoginTimeout(RuntimeError):
+    """Nobody logged in or confirmed the password within `login_timeout`."""
+
+
+def _wait_for_login(page, url: str, timeout_s: float) -> None:
+    """If PyPI wants a login or a password confirmation, let the human do it, then return."""
+    from playwright.sync_api import TimeoutError as PlaywrightTimeout
+
+    try:
+        _wait_for_login_inner(page, url, timeout_s)
+    except PlaywrightTimeout as exc:
+        raise LoginTimeout(
+            f"no PyPI login / password confirmation within {timeout_s:.0f} s; "
+            "complete it in the browser and run again (or raise login_timeout)"
+        ) from exc
 
 
 # PyPI renders publisher lists without a stable selector (and no <table> when

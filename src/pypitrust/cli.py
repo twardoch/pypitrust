@@ -173,6 +173,9 @@ def _setup_one(
     except pypi.RateLimited as exc:
         Console(stderr=True).print(f"[red]✗ {exc}[/red]")
         sys.exit(pypi.EXIT_RATE_LIMITED)
+    except RuntimeError as exc:
+        Console(stderr=True).print(f"[red]✗ {exc}[/red]")
+        sys.exit(1)
     console.print("Done. Release with: [cyan]./publish.sh[/] or push a vX.Y.Z tag")
 
 

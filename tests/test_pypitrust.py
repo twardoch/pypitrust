@@ -107,3 +107,19 @@ def test_page_error_when_403_then_message():
     from pypitrust.pypi import page_error
 
     assert page_error("403 Forbidden", "Access denied").startswith("403")
+
+
+def test_wait_for_login_when_playwright_times_out_then_login_timeout():
+    from playwright.sync_api import TimeoutError as PlaywrightTimeout
+
+    class Page:
+        url = "https://pypi.org/manage/account/publishing/"
+
+        def title(self):
+            return "Confirm password · PyPI"
+
+        def wait_for_function(self, *a, **k):
+            raise PlaywrightTimeout("Timeout 1ms exceeded.")
+
+    with pytest.raises(pypi.LoginTimeout, match="within 1 s"):
+        pypi._wait_for_login(Page(), Page.url, 1)
