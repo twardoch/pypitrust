@@ -1,0 +1,13 @@
+# this_file: pypitrust.example.toml
+# Copy to ./pypitrust.toml, ~/.config/pypitrust/config.toml, or put the keys
+# under [tool.pypitrust] in pyproject.toml. Every key is optional.
+
+environment = "pypi"        # GitHub environment the workflow publishes from
+workflow = "release.yml"    # workflow filename registered with PyPI
+test_pypi = false           # true: target test.pypi.org
+profile = "default"         # playwrightauthor browser profile (keeps your login)
+# debug_port = 9222         # Chrome CDP port, if the default is taken
+login_timeout = 300         # seconds to wait for a manual PyPI login
+action_timeout = 30         # seconds per browser action
+delay = 90                  # list runs: seconds between PyPI registrations
+cooldown = 3600             # list runs: pause after PyPI answers 429

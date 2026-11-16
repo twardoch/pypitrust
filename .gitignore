@@ -221,3 +221,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# hatch-vcs writes this at build time; never commit it
+src/pypitrust/__version__.py
+# local pypitrust run state
+*.status.json
