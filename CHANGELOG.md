@@ -5,6 +5,10 @@ this_file: CHANGELOG.md
 
 ## Unreleased
 
+- A login or password-confirmation timeout now ends with a clear message and exit 1 instead of a traceback (`pypi.LoginTimeout`).
+
+## 1.0.0 (2026-11-16)
+
 First release as a standalone package.
 
 - `pypitrust setup REPO|LIST`: creates the GitHub environment, commits the release workflow, and registers the PyPI trusted publisher (or a pending one) in a real browser. It is idempotent, detects login and sudo pages, and stops on PyPI error pages, exiting 75 on a 429.
