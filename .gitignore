@@ -226,3 +226,4 @@ __marimo__/
 src/pypitrust/__version__.py
 # local pypitrust run state
 *.status.json
+_private/
